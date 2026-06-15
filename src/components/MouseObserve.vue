@@ -3,14 +3,14 @@ import { onMounted, onUnmounted, ref, shallowRef, watch } from 'vue'
 import { useMouse, useThrottleFn, useWindowFocus } from '@vueuse/core'
 import { useSocketStore } from '@/stores/socket'
 import { useMouseWatch } from '@/composables/useMouseWatch'
-import type { MousePosition, UsersSnapshot } from '@/types/socket'
+import type { Cursor, KeyUser } from '@movalution/contracts'
 
 const socketStore = useSocketStore()
 const { watching, stop } = useMouseWatch()
 const windowFocus = useWindowFocus()
 const { x, y } = useMouse({ touch: false })
 const mouse = shallowRef({ x: 0, y: 0 })
-const users = ref<UsersSnapshot[]>([])
+const users = ref<Cursor[]>([])
 
 const throttleFn = useThrottleFn(() => {
   if (!windowFocus.value) return
@@ -26,12 +26,12 @@ const stopWatchingWatch = watch(watching, (isWatching) => {
   }
 })
 
-function handleUsersMouse(usersSnapshot: UsersSnapshot[]) {
-  console.log('snapshot', usersSnapshot)
-  users.value = usersSnapshot
+function handleMouseSnapshot(cursors: Cursor[]) {
+  console.log('snapshot', cursors)
+  users.value = cursors
 }
 
-function handleUserMouse({ id, position }: { id: string; position?: MousePosition }) {
+function handleMouseMoved({ id, position }: Cursor) {
   const user = users.value.find((u) => u.id === id)
   if (user) {
     user.position = position
@@ -40,7 +40,7 @@ function handleUserMouse({ id, position }: { id: string; position?: MousePositio
   }
 }
 
-function handleUserLeft({ id }: { id: string }) {
+function handleMouseLeft({ id }: { id: KeyUser }) {
   const userIndex = users.value.findIndex((u) => u.id === id)
   if (userIndex !== -1) {
     users.value.splice(userIndex, 1)
@@ -49,9 +49,9 @@ function handleUserLeft({ id }: { id: string }) {
 
 onMounted(() => {
   const s = socketStore.socket
-  s?.on('users:mouse', handleUsersMouse)
-  s?.on('user:mouse', handleUserMouse)
-  s?.on('user:left', handleUserLeft)
+  s?.on('mouse:snapshot', handleMouseSnapshot)
+  s?.on('mouse:moved', handleMouseMoved)
+  s?.on('mouse:left', handleMouseLeft)
 })
 
 onUnmounted(() => {
@@ -59,9 +59,9 @@ onUnmounted(() => {
   stopWatchingWatch()
 
   const s = socketStore.socket
-  s?.off('users:mouse', handleUsersMouse)
-  s?.off('user:mouse', handleUserMouse)
-  s?.off('user:left', handleUserLeft)
+  s?.off('mouse:snapshot', handleMouseSnapshot)
+  s?.off('mouse:moved', handleMouseMoved)
+  s?.off('mouse:left', handleMouseLeft)
 
   stop()
 })

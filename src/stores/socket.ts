@@ -8,9 +8,20 @@ export const useSocketStore = defineStore('socket', () => {
   const connected = ref(false)
   const connectError = ref<string | null>(null)
   const isAuthorized = ref(false)
-  const userId = ref<string>()
 
-  const online = ref(0)
+  const connectedListeners = new Set<(socket: AppSocket) => void>()
+  const disconnectedListeners = new Set<() => void>()
+
+  function onConnected(listener: (socket: AppSocket) => void) {
+    connectedListeners.add(listener)
+    if (socket.value) listener(socket.value)
+    return () => connectedListeners.delete(listener)
+  }
+
+  function onDisconnected(listener: () => void) {
+    disconnectedListeners.add(listener)
+    return () => disconnectedListeners.delete(listener)
+  }
 
   function connect() {
     if (socket.value) return
@@ -20,14 +31,16 @@ export const useSocketStore = defineStore('socket', () => {
     })
     socket.value = s
 
+    connectedListeners.forEach((listener) => listener(s))
+
     s.on('connect', () => {
       connected.value = true
       connectError.value = null
       isAuthorized.value = true
-      userId.value = s.id
     })
     s.on('disconnect', () => {
       connected.value = false
+      disconnectedListeners.forEach((listener) => listener())
     })
     s.on('connect_error', (err) => {
       console.error('Connection error:', err)
@@ -41,15 +54,6 @@ export const useSocketStore = defineStore('socket', () => {
 
       if (s.active) return
       connectError.value = err.message
-    })
-
-    s.emit('user:getProfile', (profile) => {
-      console.log('user:getProfile', profile)
-      userId.value = s.id
-    })
-
-    s.on('users:online', (count) => {
-      online.value = count
     })
   }
 
@@ -77,8 +81,8 @@ export const useSocketStore = defineStore('socket', () => {
     connected,
     connectError,
     isAuthorized,
-    userId,
-    online,
+    onConnected,
+    onDisconnected,
     connect,
     disconnect,
     reconnect,

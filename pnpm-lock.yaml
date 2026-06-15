@@ -24,8 +24,8 @@ importers:
   .:
     dependencies:
       '@movalution/contracts':
-        specifier: ^1.0.1
-        version: 1.0.1(zod@4.4.3)
+        specifier: ^1.0.3
+        version: 1.0.3(zod@4.4.3)
       '@vueuse/core':
         specifier: ^14.3.0
         version: 14.3.0(vue@3.6.0-beta.15(typescript@6.0.3))
@@ -361,8 +361,8 @@ packages:
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
-  '@movalution/contracts@1.0.1':
-    resolution: {integrity: sha512-ooSgM26MI8fAfqRKsEbeJB5NlRanaQgtpX5j5OBOpC+Yh/0iw6A5wGdI4lLsugxBW6wV7aQy/2IwU1ptcr9NXA==, tarball: https://npm.pkg.github.com/download/@movalution/contracts/1.0.1/81f2e6e3d2b9d495527150ee4feca522cdcd6c42}
+  '@movalution/contracts@1.0.3':
+    resolution: {integrity: sha512-aHyEKsR+5nMohxTcLLuXMGERxW5xbmt+pTdUFabUmBb2z3KcoyMF9lwyG8s4k1pzHqE8rR/xCFYwR0LDRdY/tA==, tarball: https://npm.pkg.github.com/download/@movalution/contracts/1.0.3/1d6bb82098ea76751cd3d6b5064d2b8f9b322996}
     peerDependencies:
       zod: ^4.0.0
 
@@ -2324,7 +2324,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@movalution/contracts@1.0.1(zod@4.4.3)':
+  '@movalution/contracts@1.0.3(zod@4.4.3)':
     dependencies:
       zod: 4.4.3
 
@@ -2923,7 +2923,7 @@ snapshots:
 
   ast-kit@2.2.0:
     dependencies:
-      '@babel/parser': 7.29.3
+      '@babel/parser': 7.29.7
       pathe: 2.0.3
 
   ast-walker-scope@0.8.3:

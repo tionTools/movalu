@@ -8,7 +8,7 @@ export const useAuthStore = defineStore('auth', () => {
   const error = ref<string | null>(null)
   const pending = ref(false)
 
-  async function login(token: string) {
+  async function login(token: LoginInput['token']) {
     pending.value = true
     error.value = null
 
