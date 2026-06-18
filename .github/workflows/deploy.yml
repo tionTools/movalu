@@ -32,8 +32,11 @@ jobs:
           version: 11
 
       - name: 📦 Build project
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
         run: |
           corepack enable
+          echo "//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}" >> .npmrc
           pnpm install --frozen-lockfile
           # pnpm lint
           # pnpm prettier
