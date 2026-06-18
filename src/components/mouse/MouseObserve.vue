@@ -1,11 +1,15 @@
 <script setup lang="ts">
-import { shallowRef, watch } from 'vue'
+import { computed, shallowRef, watch } from 'vue'
 import { useMouse, useThrottleFn, useWindowFocus } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { useMouseStore } from '@/stores/mouse'
+import { useSocketStore } from '@/stores/socket'
 
+const socketStore = useSocketStore()
 const mouseStore = useMouseStore()
 const { users, watching } = storeToRefs(mouseStore)
+
+const isConnected = computed(() => socketStore.connected && watching)
 
 const windowFocus = useWindowFocus()
 const { x, y } = useMouse({ touch: false })
@@ -25,16 +29,16 @@ watch([x, y], throttleFn)
     <slot />
 
     <div
-      v-if="watching"
+      v-if="isConnected"
       v-for="user in users"
       :key="user.id"
       class="cursor-dot"
       :style="{
-        transform: `translate3d(${user.position?.x ?? 0}px, ${user.position?.y ?? 0}px, 0)`,
+        transform: `translate3d(${user.position.x}px, ${user.position.y}px, 0)`,
       }"
     ></div>
 
-    <div class="fixed bg-gray-300 bottom-0 left-0 pointer-events-none">
+    <div v-if="isConnected" class="fixed bg-gray-300 bottom-0 left-0 pointer-events-none">
       <pre>x: {{ x }}, y:{{ y }}</pre>
       <pre>x: {{ mouse.x }}, y:{{ mouse.y }}</pre>
     </div>

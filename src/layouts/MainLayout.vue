@@ -4,7 +4,7 @@ import Header from '@/components/Header.vue'
 import { onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useSocketStore } from '@/stores/socket'
-import MouseObserve from '@/components/MouseObserve.vue'
+import MouseObserve from '@/components/mouse/MouseObserve.vue'
 
 const route = useRoute()
 const socketStore = useSocketStore()
@@ -19,7 +19,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <MouseObserve class="min-h-screen flex flex-col">
+  <MouseObserve class="min-h-screen flex flex-col main-bg">
     <Header :routeName="route.name?.toString()" />
 
     <main class="flex-1">
@@ -31,10 +31,10 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
-/* .main-bg {
+.main-bg {
   background-image:
     linear-gradient(rgba(237, 237, 237, 0.5) 1px, transparent 1px),
     linear-gradient(to right, rgba(237, 237, 237, 0.5) 1px, transparent 1px);
   background-size: 75px 75px;
-} */
+}
 </style>

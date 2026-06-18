@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import MouseWatchToggle from '@/components/MouseWatchToggle.vue'
+import MouseWatchToggle from '@/components/mouse/MouseWatchToggle.vue'
 import AuthPanel from '@/components/AuthPanel.vue'
 import Presence from '@/components/Presence.vue'
 </script>
