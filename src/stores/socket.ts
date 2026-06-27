@@ -28,6 +28,7 @@ export const useSocketStore = defineStore('socket', () => {
 
     const s: AppSocket = io(import.meta.env.VITE_WS_URL, {
       withCredentials: true,
+      retries: 3
     })
     socket.value = s
 
