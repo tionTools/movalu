@@ -1,5 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
+import { mousePositionSchema } from '@movalution/contracts'
 import type { Cursor, KeyUser, MousePosition } from '@movalution/contracts'
 import { useSocketStore } from '@/stores/socket'
 
@@ -9,15 +10,18 @@ export const useMouseStore = defineStore('mouse', () => {
   const watching = ref(false)
 
   function handleSnapshot(cursors: Cursor[]) {
-    users.value = cursors
+    users.value = cursors.filter((cursor) => mousePositionSchema.safeParse(cursor.position).success)
   }
 
   function handleMoved({ id, position }: Cursor) {
+    const result = mousePositionSchema.safeParse(position)
+    if (!result.success) return
+
     const user = users.value.find((u) => u.id === id)
     if (user) {
-      user.position = position
+      user.position = result.data
     } else {
-      users.value.push({ id, position })
+      users.value.push({ id, position: result.data })
     }
   }
 
