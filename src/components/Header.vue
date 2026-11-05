@@ -2,6 +2,7 @@
 import MouseWatchToggle from '@/components/mouse/MouseWatchToggle.vue'
 import AuthPanel from '@/components/AuthPanel.vue'
 import Presence from '@/components/Presence.vue'
+import Votes from '@/components/Votes.vue'
 </script>
 
 <template>
@@ -9,5 +10,6 @@ import Presence from '@/components/Presence.vue'
     <AuthPanel />
     <MouseWatchToggle />
     <Presence />
+    <Votes target="header-votes" />
   </header>
 </template>

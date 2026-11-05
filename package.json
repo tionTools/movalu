@@ -15,7 +15,7 @@
     "format": "oxfmt src/"
   },
   "dependencies": {
-    "@movalution/contracts": "^1.0.4",
+    "@movalution/contracts": "^1.0.5",
     "@vueuse/core": "^14.3.0",
     "pinia": "^3.0.4",
     "socket.io-client": "^4.8.3",
